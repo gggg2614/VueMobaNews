@@ -4,7 +4,12 @@
     <el-form label-width="120px" @submit.native.prevent="save">
       <el-form-item label="上级分类">
         <el-select v-model="model.parent">
-        <el-option v-for="item in parents" :key="item._id" :label="item.name" :value="item._id"></el-option>
+          <el-option
+            v-for="item in parents"
+            :key="item._id"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="名称">
@@ -25,17 +30,17 @@ export default {
   data() {
     return {
       model: {},
-      parents:[],
+      parents: [],
     };
   },
   methods: {
     async save() {
-      let res
+      let res;
       if (this.id) {
         res = await this.$http.put(`rest/categories/` + this.id, this.model);
       } else {
         // eslint-disable-next-line no-unused-vars
-        res = await this.$http.post("rest/categories",this.model);
+        res = await this.$http.post("rest/categories", this.model);
       }
       this.$router.push("/categories/list");
       this.$message({
@@ -53,7 +58,7 @@ export default {
     },
   },
   created() {
-    this.fetchParents()
+    this.fetchParents();
     this.id && this.fetch();
   },
 };
