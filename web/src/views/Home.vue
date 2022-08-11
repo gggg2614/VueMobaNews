@@ -28,6 +28,28 @@
         <span>收起</span>
       </div>
     </div>
+    <!-- end of nav icons -->
+   
+    <m-list-card icon="Menu" title="新闻资讯" :categories="newsCats">
+      <template #items="{ category }">
+        <div class="py-2" v-for="(news,i) in category.newsList" :key="i">
+          <span>[{{news.categoryName}}]</span>
+          <span>|</span>
+          <span>{{news.title}}</span>
+          <span>{{news.date}}</span>
+        </div>
+      </template>
+    </m-list-card>
+
+    <m-card icon="Menu" title="英雄列表"></m-card>
+    <p>aaa</p>
+    <p>aaa</p>
+    <p>aaa</p>
+    <p>aaa</p>
+    <p>aaa</p>
+    <p>aaa</p>
+    <p>aaa</p>
+    <p>aaa</p>
   </div>
 </template>
 
@@ -41,6 +63,48 @@ export default {
           el: ".pagination-home",
         },
       },
+      newsCats: [
+        {
+          name: "热门",
+          newsList: new Array(5).fill({}).map((v) => ({
+            categoryName: "公告",
+            title: "阿大声道",
+            date: "06/01",
+          })),
+        },
+        {
+          name: "新闻",
+          newsList: new Array(5).fill({}).map((v) => ({
+            categoryName: "公告",
+            title: "公告",
+            date: "06/01",
+          })),
+        },
+        {
+          name: "热门",
+          newsList: new Array(5).fill({}).map((v) => ({
+            categoryName: "公告",
+            title: "公告",
+            date: "06/01",
+          })),
+        },
+        {
+          name: "热门",
+          newsList: new Array(5).fill({}).map((v) => ({
+            categoryName: "公告",
+            title: "公告",
+            date: "06/01",
+          })),
+        },
+        {
+          name: "热门",
+          newsList: new Array(5).fill({}).map((v) => ({
+            categoryName: "公告",
+            title: "公告",
+            date: "06/01",
+          })),
+        },
+      ],
     };
   },
 };
@@ -64,7 +128,7 @@ export default {
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   .nav-item {
-    width: 18%;
+    width: 25%;
     border-right: 1px solid $border-color;
     &:nth-child(4n) {
       border-right: none;
