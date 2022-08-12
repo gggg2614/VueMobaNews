@@ -26,3 +26,10 @@
     <router-view></router-view>
   </div>
 </template>
+<style lang="scss">
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+</style>

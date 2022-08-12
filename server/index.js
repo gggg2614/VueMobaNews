@@ -12,6 +12,7 @@ app.use('/uploads',express.static(__dirname+'/uploads'))
 
 require('./plugins/db')(app)
 require('./routes/admin/index')(app)
+require('./routes/web/index')(app)
 
 app.listen(3000,(res,req)=>{
     console.log(3000);
