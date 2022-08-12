@@ -3,7 +3,8 @@ module.exports = app => {
     const mongoose = require('mongoose')
     const Article = mongoose.model('Article')
     const Category = mongoose.model('Category')
-
+    const Hero = mongoose.model('Hero')
+    //导入新闻数据
     router.get('/news/init', async (req, res) => {
         const parent = await Category.findOne({
             name: '新闻分类'
@@ -23,15 +24,8 @@ module.exports = app => {
         await Article.insertMany(newsList)
         res.send(newsList);
     })
+    //新闻列表
     router.get('/news/list', async (req, res) => {
-        // const parent = await Category.findOne({
-        //     name: '新闻分类'
-        // }).populate({
-        //     path: 'children',
-        //     populate: {
-        //         path: 'newsList'
-        //     }
-        // }).lean()
         const parent = await Category.findOne({
             name: '新闻分类'
         })
@@ -69,6 +63,52 @@ module.exports = app => {
         })
         res.send(cats)
     })
+    //导入英雄数据
+    router.get('/heroes/init', async (req, res) => {
+        await Hero.deleteMany({})
+        const rawData = require('./hero.json')
+        for (let cat of rawData) {
+            if (cat.name === '热门') {
+                continue
+            }
+            //找到当前分类在数据库中对应的数据
+            const category = await Category.findOne({
+                name: cat.name
+            })
+            cat.heroes = cat.heroes.map(hero => {
+                hero.categories = [category]
+                return hero
+            })
+            //录入英雄  
+            await Hero.insertMany(cat.heroes)
+        }
+        res.send(rawData)
+    })
+    //英雄列表
+    router.get('/heroes/list', async (req, res) => {
+        const parent = await Category.findOne({
+            name: '英雄分类'
+        })
+        const cats = await Category.aggregate([
+            { $match: { parent: parent._id } },
+            {
+                $lookup: {
+                    from: 'heroes',
+                    localField: '_id',
+                    foreignField: 'categories',
+                    as: 'heroList'
+                },
+            },
+        ])
+        const subCats = cats.map(v => v._id)
+        cats.unshift({
+            name: '热门',
+            heroList: await Hero.find().where({
+                categories: { $in: subCats }
+            }).limit(10).lean()
+        })
 
+        res.send(cats)
+    })
     app.use('/web/api', router)
 }
