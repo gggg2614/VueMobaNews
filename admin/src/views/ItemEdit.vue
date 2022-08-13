@@ -47,7 +47,7 @@ export default {
         // eslint-disable-next-line no-unused-vars
         res = await this.$http.post("rest/item", this.model);
       }
-      this.$router.push("/items/list");
+      // this.$router.push("/items/list");
       this.$message({
         type: "sucess",
         message: "保存成功",
